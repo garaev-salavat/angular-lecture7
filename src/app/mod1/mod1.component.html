@@ -1,0 +1,115 @@
+<h2>Поведение в объекте</h2>
+<div>
+  <p>
+    <label>name</label>
+    <input type="text" [(ngModel)]="form1.name" />
+    {{ form1.name }}
+  </p>
+  <p>
+    <label>description</label>
+    <input type="text" [(ngModel)]="form1.description" />
+    {{ form1.description }}
+  </p>
+</div>
+<div>name: {{ form1.name }}</div>
+<div>description: {{ form1.description }}</div>
+<hr />
+<h2>Поведение в форме</h2>
+<form #myForm1="ngForm">
+  <p>
+    <label>name</label>
+    <input type="text" name="name" [(ngModel)]="name" />
+    {{ name }}
+  </p>
+  <p>
+    <label>description</label>
+    <input type="text" name="description" [(ngModel)]="description" />
+    {{ description }}
+  </p>
+  <!-- <div>name: {{ myForm1.value.name }}</div>
+    <div>description: {{ myForm1.value.description }}</div> -->
+  <pre>{{ myForm1.value | json }}</pre>
+  <!-- <pre>name: {{ myForm1.control | json}}</pre> -->
+</form>
+<hr />
+<h2>Поведение в Реактивной форме</h2>
+<form [formGroup]="reactiveForm1">
+  <p>
+    <label>name</label>
+    <input type="text" name="name" formControlName="name" />
+    {{ reactiveForm1.value.name }}
+  </p>
+  <p>
+    <label>description</label>
+    <input type="text" name="description" formControlName="description" />
+    {{ reactiveForm1.value.description }}
+  </p>
+
+  <pre>{{ reactiveForm1.value | json }}</pre>
+</form>
+<hr />
+<h2>Поведение в Реактивной форме форм билдер</h2>
+<form [formGroup]="formBuilder1">
+  <p>
+    <label>name </label>
+    <input type="text" formControlName="name" />
+    <span *ngIf="formBuilder1.get('name').dirty">Поле было изменено</span>
+
+    <span *ngIf="formBuilder1.get('name').pristine">Поле не изменено</span>
+
+    <span *ngIf="formBuilder1.get('name').valid">Заполнено</span>
+
+    <span *ngIf="formBuilder1.get('name').invalid"
+      >Поле обязательно для заполнения</span
+    >
+    <br />
+    <code>{{ formBuilder1.get("name").status | json }}</code>
+  </p>
+  <p>
+    <label>description </label>
+    <input type="text" formControlName="description" />
+    <span *ngIf="formBuilder1.get('description').touched"
+      >С полем было взаимодействие</span
+    >
+    <span *ngIf="formBuilder1.get('description').untouched"
+      >С полем небыло взаимодействие</span
+    >
+    <span *ngIf="formBuilder1.get('description').valid">Заполнено</span>
+    <span *ngIf="formBuilder1.get('description').invalid"
+      >Поле обязательно для заполнения</span
+    >
+  </p>
+
+  <p>
+    <label>age </label>
+    <input type="number" formControlName="age" />
+    <span *ngIf="getAge.getError('min')"
+      >Поле не может быть меньше {{ getAge.getError("min")?.min }}</span
+    >
+    <span *ngIf="getAge.getError('max')"
+      >Поле не может быть больше {{ getAge.getError("max")?.min }}</span
+    >
+    <br />
+    <code>age errors {{ getAge.errors | json }}</code>
+  </p>
+  <hr />
+  <h4>title</h4>
+  <p>
+    <label>title </label>
+    <input type="text" formControlName="title" />
+    <span *ngIf="formBuilder1.get('title').disabled">неактивно</span>
+    <span *ngIf="formBuilder1.get('title').enabled">активно</span>
+       <code>{{ formBuilder1.get("title").status | json }}</code>
+       <button (click)="toggle()">D/E</button>
+    
+  </p>
+  <hr />
+  <div formArrayName="phones">
+    <p *ngFor="let phone of getPhones.controls; let i = index">
+      <label>{{ i }}: </label>
+      <input type="text" [formControlName]="i" />
+    </p>
+  </div>
+  <button (click)="refresh()">Refresh</button>
+  <pre>{{ formBuilder1.value | json }}</pre>
+</form>
